@@ -64,8 +64,8 @@ const CartModal: React.FC<CartModalProps> = ({ open, onClose }) => {
                 ) : (
                     <>
                         <List>
-                            {orders.map((order) => (
-                                <ListItem key={order.flight.id} disableGutters>
+                            {orders.map((order, ind) => (
+                                <ListItem key={ind} disableGutters>
                                     <ListItemText
                                         primary={`${order.flight.airline} × 1 ticket`}
 

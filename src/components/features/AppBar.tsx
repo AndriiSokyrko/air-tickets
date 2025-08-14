@@ -65,7 +65,7 @@ export default function PrimarySearchAppBar({ openCart }) {
     const dispatch = useDispatch();
     const orders = useSelector((state: RootState) => state.cart.items);
     const totalAmount = useSelector((state: RootState) => state.cart.totalAmount);
-    const quantity = orders.reduce((sum, it) => sum + it.quantity, 0);
+    const quantity = useSelector((state: RootState) => state.cart.quantity);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
         React.useState<null | HTMLElement>(null);
@@ -162,7 +162,7 @@ export default function PrimarySearchAppBar({ openCart }) {
             <MenuItem>
                 <IconButton
                     size="large"
-                    aria-label="show 17 new notifications"
+                    aria-label="show notifications"
                     color="inherit"
                     onClick={handelOpenCart}
                 >
@@ -227,7 +227,7 @@ export default function PrimarySearchAppBar({ openCart }) {
                         </IconButton>
                         <IconButton
                             size="large"
-                            aria-label="show 17 new notifications"
+                            aria-label="show notifications"
                             color="inherit"
                             onClick={handelOpenCart}
                         >

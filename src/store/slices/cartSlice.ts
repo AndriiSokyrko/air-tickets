@@ -17,7 +17,7 @@ const loadStateFromLocalStorage = (): CartState => {
     } catch (err) {
         console.error("Ошибка при чтении корзины из localStorage", err);
     }
-    return {items: [], totalAmount: 0};
+    return {items: [],quantity:0, totalAmount: 0};
 };
 const saveStateToLocalStorage = (state: CartState) => {
     try {

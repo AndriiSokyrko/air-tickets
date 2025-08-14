@@ -21,8 +21,8 @@ interface FlightDetailsModalProps {
 
 export const FlightDetailsModal: React.FC<FlightDetailsModalProps> = ({open, onClose, flight}) => {
     const dispatch = useDispatch();
-    if (!flight) return null;
     const [infoSeatFleight, setInfoSeatFleight] = useState<InfoSeat>(null)
+    if (!flight) return null;
     function onBook(flight:InfoTicket) {
         dispatch(addTicket({flight, infoSeatFleight}));
         onClose(true)

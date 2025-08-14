@@ -11,7 +11,7 @@ export default function FlightsPagination({onChange}) {
     const totalPages = Math.ceil(flights.length / itemsPerPage);
 
     const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
-        // onChange(value);
+        onChange(value);
         setCurrentPage(value)
     };
 
