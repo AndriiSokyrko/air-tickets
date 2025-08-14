@@ -23,3 +23,14 @@ export interface FlightsState {
     loading: boolean;
     error: string | null;
 }
+
+export interface InfoSeat {
+    id: string;
+    row: number;
+    seatNumber: number;
+    status?: 'free' | 'occupied' | 'selected';
+}
+export interface InfoTicket {
+    flight: Flight;
+    info: InfoSeat;
+}

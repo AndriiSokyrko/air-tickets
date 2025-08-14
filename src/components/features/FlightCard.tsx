@@ -11,9 +11,6 @@ interface FlightCardProps {
 
 export const FlightCard: React.FC<FlightCardProps> = ({flight,onOpenDetails }) => {
     const dispatch = useDispatch();
-    // function onBook(payload){
-    //     dispatch(addTicket(payload));
-    // }
     const handleOpenDetails = ()=>{
         onOpenDetails(flight.id)
     }
@@ -67,7 +64,6 @@ export const FlightCard: React.FC<FlightCardProps> = ({flight,onOpenDetails }) =
                     variant="contained"
                     color="primary"
                     fullWidth
-                    onClick={() => onBook?.(flight)}
                     disabled={flight.tickets.remaining === 0}
                 >
                     {flight.tickets.remaining > 0 ? 'Book Now' : 'Sold Out'}

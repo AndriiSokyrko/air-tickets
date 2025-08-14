@@ -1,14 +1,9 @@
 // src/store/cartSlice.ts
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import type {Flight} from "../../types/flight.ts";
+import type {Flight, InfoSeat, InfoTicket} from "../../types/flight.ts";
 
-interface Ticket {
-    items: Flight;
-    seatNumber?: number;
-
-}
 interface CartState {
-    items: Ticket[];
+    items: InfoTicket[];
     quantity: number;
     totalAmount: number;
 }
@@ -22,7 +17,7 @@ const loadStateFromLocalStorage = (): CartState => {
     } catch (err) {
         console.error("Ошибка при чтении корзины из localStorage", err);
     }
-    return { items: [], totalAmount: 0 };
+    return {items: [], totalAmount: 0};
 };
 const saveStateToLocalStorage = (state: CartState) => {
     try {
@@ -32,41 +27,37 @@ const saveStateToLocalStorage = (state: CartState) => {
     }
 };
 
-     const initialState: CartState = loadStateFromLocalStorage();
+const initialState: CartState = loadStateFromLocalStorage();
 const cartSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
-        addTicket: (state, action: PayloadAction<Omit<Ticket, 'quantity' >>)=> {
-            const existingTicket = state.items.find((t) => t.id === action.payload.id);
-            if (existingTicket) {
-                existingTicket.quantity += 1;
-            } else {
-                state.items.push({...action.payload, quantity: 1});
-
-            }
-            state.totalAmount = state.items.reduce(
-                (sum, t) => sum + t.price * t.quantity,
-                0
-            );
+        addTicket: (state, action: PayloadAction<InfoTicket>) => {
+            state.quantity += 1;
+            state.items.push(action.payload);
+            state.totalAmount += action.payload.flight.price
             saveStateToLocalStorage(state);
         },
         removeTicket: (state, action: PayloadAction<string>) => {
-            state.items = state.items.filter((t) => t.id !== action.payload);
-            state.totalAmount = state.items.reduce(
-                (sum, t) => sum + t.price * t.quantity,
-                0
-            );
+            state.items = state.items.filter((t) => t.flights.id !== action.payload);
+            state.quantity =-1;
+            state.items.push(action.payload);
+            state.totalAmount =- state.items.find((t) => t.flights.id === action.payload).flights.price;
+            saveStateToLocalStorage(state);
         },
-        updateQuantity:(state, action: PayloadAction<{ id: string; quantity: number }>) => {
+        updateQuantity: (state, action: PayloadAction<{ id: string; quantity: number }>) => {
             const ticket = state.items.find((t) => t.id === action.payload.id);
             if (ticket) {
                 ticket.quantity = action.payload.quantity;
             }
             state.totalAmount = state.items.reduce(
-                (sum, t) => sum + t.price * t.quantity, 0 );
+                (sum, t) => sum + t.price * t.quantity, 0);
         },
-        clearCart:(state) => {    state.items = [];    state.totalAmount = 0; localStorage.removeItem('cart')},
+        clearCart: (state) => {
+            state.items = [];
+            state.totalAmount = 0;
+            localStorage.removeItem('cart')
+        },
     }
 });
 

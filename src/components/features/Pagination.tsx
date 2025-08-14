@@ -22,7 +22,7 @@ export default function FlightsPagination({onChange}) {
     );
 
     return (
-        <Stack spacing={2} sx={{display: flex, justifyContent:center}}>
+        <Stack spacing={2} sx={{display: 'flex', justifyContent:'center'}}>
             <Pagination
                 count={totalPages}
                 page={currentPage}

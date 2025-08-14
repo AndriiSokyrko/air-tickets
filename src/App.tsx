@@ -41,7 +41,6 @@ function App() {
     };
     const handleOpenDetails = (id: string) => {
         const data = list.find(it=>it.id===id)
-        console.log(data)
         setSelectedFlight(data);
         setDetailsOpen(true);
     };

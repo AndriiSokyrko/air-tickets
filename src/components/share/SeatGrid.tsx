@@ -4,12 +4,16 @@ import { generateSeats, Seat } from '../../helper/seatsGenerator';
 import { useDispatch } from 'react-redux';
 import { addTicket } from '../../store/slices/cartSlice';
 import EventSeatIcon from '@mui/icons-material/EventSeat';
+import {Box} from "@mui/material";
+import type {InfoSeat} from "../../types/flight.ts";
 
-const SeatGrid: React.FC = () => {
+const SeatGrid: React.FC = ({onHandle}) => {
     const dispatch = useDispatch();
     const [seats, setSeats] = useState<Seat[]>(() => generateSeats(10, 6));
-
-    const handleSelectSeat = (seat: Seat) => {
+    const handleClick = (info: InfoSeat) =>{
+        onHandle(info)
+    }
+    const handleSelectSeat = (seat: InfoSeat) => {
         if (seat.status === 'occupied') return;
         if (seat.status === 'selected') {
             setSeats((prev) =>
@@ -24,14 +28,15 @@ const SeatGrid: React.FC = () => {
                     s.id === seat.id ? { ...s, status: 'selected' } : s
                 )
             );
-            dispatch(addTicket({ id: seat.id, row: seat.row, seatNumber: seat.seatNumber }));
+            // dispatch(addTicket({ id: seat.id, row: seat.row, seatNumber: seat.seatNumber }));
+            handleClick({ id: seat.id, row: seat.row, seatNumber: seat.seatNumber })
         }
     };
 
     return (
-        <div style={{ display: 'grid', gap: '8px' }}>
+        <Box sx={{ display: 'inline-block', gap: '8px' }}>
             {Array.from({ length: 10 }, (_, rowIndex) => (
-                <div key={rowIndex} style={{ display: 'flex', gap: '6px' }}>
+                <Box key={rowIndex} style={{ display: 'flex', gap: '6px' }}>
                     {seats
                         .filter((s) => s.row === rowIndex + 1)
                         .map((seat) => (
@@ -50,9 +55,9 @@ const SeatGrid: React.FC = () => {
                                 }}
                             />
                         ))}
-                </div>
+                </Box>
             ))}
-        </div>
+        </Box>
     );
 };
 

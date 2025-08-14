@@ -1,13 +1,8 @@
+import type {InfoSeat} from "../types/flight.ts";
 
-export interface Seat {
-    id: string;
-    row: number;
-    seatNumber: number;
-    status: 'free' | 'occupied' | 'selected';
-}
 
-export const generateSeats = (rows: number, seatsPerRow: number): Seat[] => {
-    const seats: Seat[] = [];
+export const generateSeats = (rows: number, seatsPerRow: number): InfoSeat[] => {
+    const seats: InfoSeat[] = [];
     for (let row = 1; row <= rows; row++) {
         for (let seat = 1; seat <= seatsPerRow; seat++) {
             seats.push({
