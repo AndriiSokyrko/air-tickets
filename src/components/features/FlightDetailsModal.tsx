@@ -12,6 +12,8 @@ import type {Flight, InfoSeat, InfoTicket} from '../../types/flight';
 import SeatGrid from "../share/SeatGrid";
 import {addTicket} from "../../store/slices/cartSlice.ts";
 import {useDispatch} from "react-redux";
+// import 'react-native-get-random-values';
+import {v4, v4 as uuidv4} from 'uuid';
 
 interface FlightDetailsModalProps {
     open: boolean;
@@ -24,7 +26,8 @@ export const FlightDetailsModal: React.FC<FlightDetailsModalProps> = ({open, onC
     const [infoSeatFleight, setInfoSeatFleight] = useState<InfoSeat>(null)
     if (!flight) return null;
     function onBook(flight:InfoTicket) {
-        dispatch(addTicket({flight, infoSeatFleight}));
+        const id:string = v4();
+        dispatch(addTicket({id, flight, infoSeatFleight}));
         onClose(true)
     }
     const handleClick=(info:InfoSeat)=>{

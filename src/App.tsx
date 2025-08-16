@@ -54,6 +54,7 @@ function App() {
     }, [dispatch]);
     return (
         <>
+
             <Header comp={AppBar} onOpen={handleOpen}/>
             {loading &&
                 <Loader/>
@@ -82,7 +83,9 @@ function App() {
                 onChange={handlePageChange}
                 color="primary"
             />
+            <AppRouter/>
             <Footer comp={IconNavigation}/>
+
         </>
     );
 }

@@ -34,28 +34,25 @@ const cartSlice = createSlice({
     reducers: {
         addTicket: (state, action: PayloadAction<InfoTicket>) => {
             state.quantity += 1;
+
             state.items.push(action.payload);
             state.totalAmount += action.payload.flight.price
             saveStateToLocalStorage(state);
         },
         removeTicket: (state, action: PayloadAction<string>) => {
-            state.items = state.items.filter((t) => t.flights.id !== action.payload);
-            state.quantity =-1;
-            state.items.push(action.payload);
-            state.totalAmount =- state.items.find((t) => t.flights.id === action.payload).flights.price;
+            state.totalAmount -= state.items.find((t) => t.id === action.payload).flight.price;
+            state.items = state.items.filter((t) => t.id !== action.payload);
+            state.quantity -= 1;
             saveStateToLocalStorage(state);
         },
-        updateQuantity: (state, action: PayloadAction<{ id: string; quantity: number }>) => {
-            const ticket = state.items.find((t) => t.id === action.payload.id);
-            if (ticket) {
-                ticket.quantity = action.payload.quantity;
-            }
-            state.totalAmount = state.items.reduce(
-                (sum, t) => sum + t.price * t.quantity, 0);
+        updateQuantity: (state, action: PayloadAction<{ id: string}>) => {
+            state.items.filter((t) => t.flights.id === action.payload);
+
         },
         clearCart: (state) => {
             state.items = [];
             state.totalAmount = 0;
+            state.quantity = 0;
             localStorage.removeItem('cart')
         },
     }

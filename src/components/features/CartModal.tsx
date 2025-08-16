@@ -13,7 +13,8 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../../store/store';
-import { clearCart } from '../../store/slices/cartSlice';
+import {clearCart, removeTicket} from '../../store/slices/cartSlice';
+import type {InfoTicket} from "../../types/flight.ts";
 
 interface CartModalProps {
     open: boolean;
@@ -38,12 +39,14 @@ const CartModal: React.FC<CartModalProps> = ({ open, onClose }) => {
     const dispatch = useDispatch();
     const orders = useSelector((state: RootState) => state.cart.items);
     const totalAmount = useSelector((state: RootState) => state.cart.totalAmount);
-
     const handleClear = () => {
         dispatch(clearCart());
     };
     const handleClose=()=>{
         onClose()
+    }
+    const handleDelete =( id:string)=>{
+        dispatch(removeTicket(id));
     }
     return (
         <Modal open={open} onClose={onClose} aria-labelledby="cart-modal-title">
@@ -65,7 +68,7 @@ const CartModal: React.FC<CartModalProps> = ({ open, onClose }) => {
                     <>
                         <List>
                             {orders.map((order, ind) => (
-                                <ListItem key={ind} disableGutters>
+                                <ListItem key={order.flight.id} disableGutters>
                                     <ListItemText
                                         primary={`${order.flight.airline} × 1 ticket`}
 
@@ -74,6 +77,13 @@ const CartModal: React.FC<CartModalProps> = ({ open, onClose }) => {
                                         primary={`${order.flight.from} - ${order.flight.to}`}
                                         secondary={`Цена: $${order.flight.price} `}
                                     />
+                                    <ListItemText
+                                        primary={`Number${order.infoSeatFleight.seatNumber}`}
+                                        secondary={`Row ${order.infoSeatFleight.row}`}
+                                    />
+                                    <IconButton onClick={() => handleDelete(order.id)} size="small">
+                                        <CloseIcon />
+                                    </IconButton>
                                 </ListItem>
                             ))}
                         </List>

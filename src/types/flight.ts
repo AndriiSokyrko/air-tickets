@@ -31,6 +31,7 @@ export interface InfoSeat {
     status?: 'free' | 'occupied' | 'selected';
 }
 export interface InfoTicket {
+    id:string;
     flight: Flight;
     info: InfoSeat;
 }
